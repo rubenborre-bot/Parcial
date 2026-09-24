@@ -1,35 +1,26 @@
-# Portal de Eventos Universitarios - React
+## Parcial
+Nombre del estudiante: ruben david borre perez
 
-Nombre:Ruben david borre perez
+API asignada: API de chistes
 
-Descripción del proyecto:
-Aplicación web interactiva desarrollada en React con Vite para la visualización y gestión de inscripciones a talleres y eventos universitarios. Permite consultar una lista dinámica de eventos y gestionar la inscripción mediante un formulario interactivo.
+Endpoint utilizado: https://newsdata.io/api/1/latest?apikey=${API_KEY}&q=chistes%20OR%20humor&language=es
 
----
+Descripción de la aplicación: Aplicacion que muestra diferentes chistes
 
-## Componentes creados:
-- `Header.jsx`: Encabezado principal de la interfaz con navegación semántica (`<header>`, `<nav>`).
-- `EventCard.jsx`: Componente modular reutilizable que renderiza los detalles de cada evento y maneja el estado local para mostrar u ocultar la información extendida.
-- `RegistrationForm.jsx`: Formulario de inscripción dinámico que carga la lista de eventos mediante `.map()`, gestiona la prevención de recarga con `e.preventDefault()` y alterna el estado de inscripción.
-- `Footer.jsx`: Pie de página semántico con información institucional y derechos de autor.
-- `App.jsx`: Componente raíz que actúa como fuente de verdad para los datos y coordina el flujo de props hacia los componentes hijos.
+Componentes desarrollados: Chistes.jsx y Header.jsx
 
----
+Datos utilizados de la API: article_id (Identificador único para la propiedad key)
 
-## Conceptos de React utilizados:
-- JSX: Sintaxis declarativa para combinar la estructura HTML con lógica de JavaScript.
-- Componentes Funcionales y Props: Arquitectura modular con paso de datos unidireccional de padres a hijos.
-- Estado Local (`useState`): Manejo de reactividad en la interfaz para alternar visibilidad de detalles y confirmar inscripciones.
-- Renderizado de Listas (`.map()` y `key`): Generación dinámica de elementos del DOM garantizando la identidad única de cada nodo.
-- HTML Semántico: Uso estricto de etiquetas como `<header>`, `<nav>`, `<main>`, `<article>`, `<form>` y `<footer>`.
-- Manejo de Eventos: Control de eventos de envío (`onSubmit`) e interacción de usuario (`onClick`).
+title (Título de la publicación)
 
----
+description (Resumen o contenido del chiste/artículo)
 
-## Preguntas de reflexión:
+link (Enlace a la fuente original)
 
-### ¿Qué fue lo más difícil del ejercicio?
-Comprender la desestructuración correcta de las props al transmitirlas entre componentes y asegurar el control del evento por defecto en el formulario (`e.preventDefault()`) para evitar que la página se refrescara y perdiera el estado.
+pubDate (Fecha de publicación)
 
-### ¿Qué diferencia identifica ahora entre HTML y React?
-En HTML tradicional la estructura es estática y la interacción requiere manipular directamente el DOM de forma imperativa con JavaScript. En React, la interfaz es declarativa: se construyen componentes reutilizables cuyo contenido se actualiza automáticamente en pantalla cuando cambia el estado (`useState`), mejorando el rendimiento y la mantenibilidad.
+category / language (Categoría e idioma)
+
+Funcionalidad de búsqueda o filtro: Búsqueda por palabras clave mediante parámetros de consulta (q=chistes OR humor) y filtrado por idioma (language=es) directamente en la petición HTTP.
+
+Funcionalidad adicional implementada: Manejo de errores y retroalimentación: Captura de excepciones mediante bloque try/catch con despliegue de mensajes visuales en pantalla en caso de fallos en la red o en la respuesta de la API

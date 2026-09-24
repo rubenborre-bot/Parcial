@@ -1,107 +1,67 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import Header from './components/Header'
-import EventCard from './components/EventCard'
-import Footer from './components/Footer'
-import RegistrationForm from './components/RegistrationForm'
 import './App.css'
+import { Header } from './componentes/Header'
+import { Chistes } from './componentes/Chistes'
 
 function App() {
-  const eventCard = [
-    {
-      id: 1,
-      nombre: "Curso de react",
-      evento: "React",
-        categoria: "Desarrollo",
-        fecha: "15 de septiembre",
-        modalidad: "Presencial",
-        lugar: "Auditorio principal",
-        descripcion: "Curso introductorio de react." 
-    },
-    {
-      id: 2,
-      nombre: "Introducción a CSS",
-      evento: "CSS",
-        categoria: "Desarrollo",
-        fecha: "15 de septiembre",
-        modalidad: "Presencial",
-        lugar: "Auditorio principal",
-        descripcion: "Aprender a dar estilos a tus paginas." 
-    },
-    {
-      id: 3,
-      nombre: "Curso de HTML",
-      evento: "HTML",
-        categoria: "Desarrollo",
-        fecha: "15 de septiembre",
-        modalidad: "Presencial",
-        lugar: "Auditorio principal",
-        descripcion: "Aprende a estructurar tus paginas con html." 
-    },
-    {
-      id: 4,
-      nombre: "Introducción a JavaScript",
-      evento: "JavaScript",
-      categoria: "Desarrollo",
-      fecha: "15 de septiembre",
-      modalidad: "Presencial",
-      lugar: "Auditorio principal",
-      descripcion: "Aprenderas con javaScript como hacer que tus paginas sean interactivas." 
-    },
-    {
-      id: 5,
-      nombre: "Curso de Python",
-      evento: "Python",
-      categoria: "Desarrollo",
-      fecha: "15 de septiembre",
-      modalidad: "Presencial",
-      lugar: "Auditorio principal",
-      descripcion: "Adquiere bases en python." 
-    },
-    {
-        id: 6,
-        nombre: "Introducción a POO con Java",
-        evento: "POO con Java",
-        categoria: "Desarrollo",
-        fecha: "15 de septiembre",
-        modalidad: "Presencial",
-        lugar: "Auditorio principal",
-        descripcion: "Introducción a POO con Java." 
+  const [verChistes, setVerChistes] = useState(false)
+  const [cargarChiste, setCargarChiste] = useState([])
+  const [error, setError] = useState("")
 
+  const API_KEY = import.meta.env.VITE_CHISTES_API_KEY
+  const API_URL = `https://newsdata.io/api/1/latest?apikey=${API_KEY}&q=chistes%20OR%20humor&language=es`
+
+  async function obtenerChistes() {
+    if (verChistes) {
+      setVerChistes(false)
+      return
     }
-  ]
+    if (cargarChiste.length > 0) {
+      setVerChistes(true)
+      return
+    }
+    try {
+      setError("")
+      const response = await fetch(API_URL)
+      if (!response.ok) {
+        throw new Error("Error al obtener chistes")
+      }
+      const data = await response.json()
+      setCargarChiste(data.results || [])
+      setVerChistes(true)
+    } catch (error) {
+      setError(error.message)
+    }
+  }
+
   return (
     <div>
       <Header />
-      <main>
-        <h2>Cursos disponibles</h2>
-        {eventCard.map((evento)=>(
-<EventCard
+      
+      <button onClick={obtenerChistes}>
+        {verChistes ? 'Ocultar chistes' : 'Consultar chistes'}
+      </button>
 
-key= {evento.id}
-nombre = {evento.nombre}
-categoria = {evento.categoria}
-fecha = {evento.fecha}
-modalidad = {evento.modalidad}
-lugar = {evento.lugar}
-descripcion = {evento.descripcion}
+      {verChistes && (
+        <section className='chistes-grid'>
+          {cargarChiste.map(chiste => (
+            <Chistes 
+              key={chiste.article_id}
+              title={chiste.title}
+              description={chiste.description}
+              link={chiste.link}
+              pubDate={chiste.pubDate}
+              category={chiste.category}
+              language={chiste.language}
+            />
+          ))} 
+        </section>
+      )}
 
-/>
-))}
-
-<RegistrationForm 
-evento = {eventCard}
-/>
-
-
-       
-       
-      </main>
-     <Footer /> 
-    </div>    
-  );
+      {error && <p>{error}</p>}
+    </div>
+  )
 }
 
-export default App;
+export default App
+
